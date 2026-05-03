@@ -3,453 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moving Week — Anastasia & Elliott</title>
+<title>Moving Month — Anastasia & Elliott</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --ana: #5DCAA5; --ana-light: #E1F5EE; --ana-dark: #0F6E56;
-    --ell: #AFA9EC; --ell-light: #EEEDFE; --ell-dark: #3C3489;
-    --both: #FAC775; --both-light: #FAEEDA; --both-dark: #633806;
-    --ms: #F0997B; --ms-light: #FAECE7; --ms-dark: #993C1D;
-    --bl: #B4B2A9; --bl-light: #F1EFE8; --bl-dark: #444441;
-    --text: #1a1a1a; --muted: #6b6b6b;
-    --border: rgba(0,0,0,0.12); --bg: #ffffff;
-    --bg2: #f7f6f3; --bg3: #eeede9;
-    --radius-md: 8px; --radius-lg: 12px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text: #f0ede8; --muted: #9a9690;
-      --border: rgba(255,255,255,0.1); --bg: #1c1b19;
-      --bg2: #252420; --bg3: #2e2d29;
-      --ana-light: #0a2e20; --ana-dark: #5DCAA5;
-      --ell-light: #1a1838; --ell-dark: #AFA9EC;
-      --both-light: #2a2210; --both-dark: #FAC775;
-      --ms-light: #2e1a10; --ms-dark: #F0997B;
-      --bl-light: #222220; --bl-dark: #B4B2A9;
-    }
-  }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
-  .site { max-width: 800px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .header { margin-bottom: 2rem; }
-  .header h1 { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--text); line-height: 1.2; }
-  .header h1 em { font-style: italic; color: var(--ana); }
-  .header .sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
-  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; gap: 0; }
-  .tab { padding: 9px 18px; font-size: 13px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s; font-family: 'DM Sans', sans-serif; background: none; border-top: none; border-left: none; border-right: none; }
-  .tab.active { color: var(--text); border-bottom-color: var(--ana); font-weight: 500; }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 1.5rem; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .milestones { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 2rem; }
-  .mc { background: var(--ms-light); border: 1px solid var(--ms); border-radius: var(--radius-md); padding: 10px 12px; }
-  .mc-date { font-size: 10px; font-weight: 500; color: var(--ms-dark); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 3px; }
-  .mc-label { font-size: 13px; color: var(--ms-dark); line-height: 1.3; }
-  .days { display: flex; flex-direction: column; gap: 10px; }
-  .day-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-  .day-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
-  .day-title-group { display: flex; align-items: baseline; gap: 8px; }
-  .day-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); }
-  .day-date { font-size: 12px; color: var(--muted); }
-  .day-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
-  .badge { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 500; }
-  .badge-ms { background: var(--ms-light); color: var(--ms-dark); border: 1px solid var(--ms); }
-  .badge-bl { background: var(--bl-light); color: var(--bl-dark); border: 1px solid var(--bl); }
-  .chev { font-size: 11px; color: var(--muted); transition: transform 0.2s; margin-left: 8px; }
-  .chev.open { transform: rotate(180deg); }
-  .day-body { padding: 14px 16px; display: none; }
-  .day-body.open { display: block; }
-  .note-strip { background: var(--bg2); border-radius: var(--radius-md); padding: 9px 13px; margin-bottom: 12px; font-size: 12px; color: var(--muted); font-style: italic; line-height: 1.5; }
-  .tasks { display: flex; flex-direction: column; gap: 6px; }
-  .task { display: flex; align-items: flex-start; gap: 9px; padding: 9px 11px; border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; transition: opacity 0.15s; }
-  .task.done { opacity: 0.38; }
-  .task.done .task-text { text-decoration: line-through; }
-  .task.ana { background: var(--ana-light); border-color: var(--ana); }
-  .task.ell { background: var(--ell-light); border-color: var(--ell); }
-  .task.both { background: var(--both-light); border-color: var(--both); }
-  .task.blocked { background: var(--bl-light); border-color: var(--bl); }
-  .task-who { font-size: 11px; font-weight: 500; min-width: 30px; padding-top: 1px; flex-shrink: 0; }
-  .task.ana .task-who { color: var(--ana-dark); }
-  .task.ell .task-who { color: var(--ell-dark); }
-  .task.both .task-who { color: var(--both-dark); }
-  .task.blocked .task-who { color: var(--bl-dark); }
-  .task-text { font-size: 13px; color: var(--text); line-height: 1.45; flex: 1; }
-  .task-tag { font-size: 10px; margin-left: auto; padding: 2px 7px; border-radius: 10px; white-space: nowrap; align-self: flex-start; margin-top: 1px; flex-shrink: 0; }
-  .tag-pack { background: #E1F5EE; color: #0F6E56; }
-  .tag-admin { background: #EEEDFE; color: #3C3489; }
-  .tag-move { background: #FAECE7; color: #993C1D; }
-  .tag-life { background: #FAEEDA; color: #633806; }
-  .sec-label { font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 0.09em; text-transform: uppercase; margin: 12px 0 5px; }
-  .sec-label:first-child { margin-top: 0; }
-  .progress-bar { height: 4px; background: var(--bg3); border-radius: 2px; margin-bottom: 1rem; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--ana); border-radius: 2px; transition: width 0.3s; }
-  .sum-strip { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; margin-top: 1.5rem; display: flex; gap: 20px; flex-wrap: wrap; }
-  .sum-stat { display: flex; flex-direction: column; gap: 2px; }
-  .sum-val { font-size: 20px; font-weight: 500; color: var(--text); }
-  .sum-lab { font-size: 11px; color: var(--muted); }
-  .addr-intro { font-size: 13px; color: var(--both-dark); margin-bottom: 1.5rem; padding: 11px 14px; background: var(--both-light); border: 1px solid var(--both); border-radius: var(--radius-md); line-height: 1.5; }
-  .addr-cats { display: flex; flex-direction: column; gap: 10px; }
-  .addr-cat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-  .addr-cat-hdr { padding: 11px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .addr-cat-title { font-size: 14px; font-weight: 500; color: var(--text); }
-  .addr-cat-ct { font-size: 11px; color: var(--muted); }
-  .addr-items { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
-  .addr-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 11px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--bg); cursor: pointer; transition: opacity 0.15s; }
-  .addr-item.done { opacity: 0.38; }
-  .addr-item.done .ain { text-decoration: line-through; }
-  .addr-chk { width: 17px; height: 17px; border: 1px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 10px; background: var(--bg2); color: var(--ana-dark); }
-  .addr-item.done .addr-chk { background: var(--ana-light); border-color: var(--ana); }
-  .ain { font-size: 13px; color: var(--text); font-weight: 500; }
-  .aihow { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
-  .awho-wrap { display: flex; gap: 4px; margin-left: auto; flex-shrink: 0; padding-left: 8px; }
-  .awho { font-size: 10px; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
-  .awho.ana { background: var(--ana-light); color: var(--ana-dark); }
-  .awho.ell { background: var(--ell-light); color: var(--ell-dark); }
-  .awho.both { background: var(--both-light); color: var(--both-dark); }
-  .addr-prog { height: 4px; background: var(--bg3); border-radius: 2px; margin-bottom: 1rem; overflow: hidden; }
-  .addr-prog-fill { height: 100%; background: var(--ell); border-radius: 2px; transition: width 0.3s; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--ana:#5DCAA5;--ana-light:#E1F5EE;--ana-dark:#0F6E56;--ell:#AFA9EC;--ell-light:#EEEDFE;--ell-dark:#3C3489;--both:#FAC775;--both-light:#FAEEDA;--both-dark:#633806;--ms:#F0997B;--ms-light:#FAECE7;--ms-dark:#993C1D;--bl:#B4B2A9;--bl-light:#F1EFE8;--bl-dark:#444441;--col:#85B7EB;--col-light:#E6F1FB;--col-dark:#0C447C;--text:#1a1a1a;--muted:#6b6b6b;--border:rgba(0,0,0,0.12);--bg:#fff;--bg2:#f7f6f3;--bg3:#eeede9;--r:8px;--rl:12px}
+  @media(prefers-color-scheme:dark){:root{--text:#f0ede8;--muted:#9a9690;--border:rgba(255,255,255,0.1);--bg:#1c1b19;--bg2:#252420;--bg3:#2e2d29;--ana-light:#0a2e20;--ana-dark:#5DCAA5;--ell-light:#1a1838;--ell-dark:#AFA9EC;--both-light:#2a2210;--both-dark:#FAC775;--ms-light:#2e1a10;--ms-dark:#F0997B;--bl-light:#222220;--bl-dark:#B4B2A9;--col-light:#0a1e34;--col-dark:#85B7EB}}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
+  .site{max-width:820px;margin:0 auto;padding:2rem 1.25rem 4rem}
+  .header{margin-bottom:2rem}
+  .header h1{font-family:'DM Serif Display',serif;font-size:32px;color:var(--text);line-height:1.2}
+  .header h1 em{font-style:italic;color:var(--ana)}
+  .header .sub{font-size:13px;color:var(--muted);margin-top:6px}
+  .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.5rem;flex-wrap:wrap}
+  .tab{padding:9px 16px;font-size:13px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'DM Sans',sans-serif;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+  .tab.active{color:var(--text);border-bottom-color:var(--ana);font-weight:500}
+  .tab-panel{display:none}.tab-panel.active{display:block}
+  .pb{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:1rem;overflow:hidden}
+  .pf{height:100%;border-radius:2px;transition:width .3s}
+  .sum{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-top:1.5rem;display:flex;gap:20px;flex-wrap:wrap}
+  .sv{font-size:20px;font-weight:500;color:var(--text)}
+  .sl{font-size:11px;color:var(--muted)}
+  .sec-intro{font-size:13px;color:var(--both-dark);margin-bottom:1.5rem;padding:11px 14px;background:var(--both-light);border:1px solid var(--both);border-radius:var(--r);line-height:1.5}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+  .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .milestones{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:2rem}
+  .mc{background:var(--ms-light);border:1px solid var(--ms);border-radius:var(--r);padding:10px 12px}
+  .mc.col{background:var(--col-light);border-color:var(--col)}
+  .mc-date{font-size:10px;font-weight:500;color:var(--ms-dark);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+  .mc.col .mc-date,.mc.col .mc-label{color:var(--col-dark)}
+  .mc-label{font-size:13px;color:var(--ms-dark);line-height:1.3}
+  .days{display:flex;flex-direction:column;gap:10px}
+  .day-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+  .day-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:var(--bg2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+  .day-title-group{display:flex;align-items:baseline;gap:8px}
+  .day-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text)}
+  .day-date{font-size:12px;color:var(--muted)}
+  .day-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .badge{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500}
+  .badge-ms{background:var(--ms-light);color:var(--ms-dark);border:1px solid var(--ms)}
+  .badge-bl{background:var(--bl-light);color:var(--bl-dark);border:1px solid var(--bl)}
+  .badge-col{background:var(--col-light);color:var(--col-dark);border:1px solid var(--col)}
+  .chev{font-size:11px;color:var(--muted);transition:transform .2s;margin-left:8px}
+  .chev.open{transform:rotate(180deg)}
+  .day-body{padding:14px 16px;display:none}.day-body.open{display:block}
+  .note-strip{background:var(--bg2);border-radius:var(--r);padding:9px 13px;margin-bottom:12px;font-size:12px;color:var(--muted);font-style:italic;line-height:1.5}
+  .tasks{display:flex;flex-direction:column;gap:6px}
+  .task{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;border-radius:var(--r);border:1px solid transparent;cursor:pointer;transition:opacity .15s}
+  .task.done{opacity:.35}.task.done .task-text{text-decoration:line-through}
+  .task.ana{background:var(--ana-light);border-color:var(--ana)}
+  .task.ell{background:var(--ell-light);border-color:var(--ell)}
+  .task.both{background:var(--both-light);border-color:var(--both)}
+  .task.blocked{background:var(--bl-light);border-color:var(--bl)}
+  .task-who{font-size:11px;font-weight:500;min-width:30px;padding-top:1px;flex-shrink:0}
+  .task.ana .task-who{color:var(--ana-dark)}.task.ell .task-who{color:var(--ell-dark)}.task.both .task-who{color:var(--both-dark)}.task.blocked .task-who{color:var(--bl-dark)}
+  .task-text{font-size:13px;color:var(--text);line-height:1.45;flex:1}
+  .task-tag{font-size:10px;margin-left:auto;padding:2px 7px;border-radius:10px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0}
+  .tag-pack{background:#E1F5EE;color:#0F6E56}.tag-admin{background:#EEEDFE;color:#3C3489}.tag-move{background:#FAECE7;color:#993C1D}.tag-life{background:#FAEEDA;color:#633806}.tag-home{background:#E6F1FB;color:#0C447C}
+  .sec-label{font-size:10px;font-weight:500;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin:12px 0 5px}
+  .sec-label:first-child{margin-top:0}
+  .addr-cats,.room-grid,.pack-cats{display:flex;flex-direction:column;gap:10px}
+  .addr-cat,.room-card,.pack-cat{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+  .addr-cat-hdr,.room-hdr,.pack-cat-hdr{padding:11px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .room-hdr,.pack-cat-hdr{cursor:pointer;user-select:none}
+  .addr-cat-title,.room-title{font-size:14px;font-weight:500;color:var(--text)}
+  .room-title{font-family:'DM Serif Display',serif;font-size:17px}
+  .addr-cat-ct,.room-ct,.pack-cat-ct{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .addr-items,.room-items,.pack-items{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+  .pack-items{display:none}
+  .room-body{padding:14px 16px;display:none}.room-body.open{display:block}
+  .addr-item,.room-item{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:opacity .15s}
+  .addr-item.done,.room-item.done{opacity:.35}
+  .addr-item.done .ain,.room-item.done .rin{text-decoration:line-through}
+  .addr-chk,.room-chk{width:17px;height:17px;border:1px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--bg2);color:var(--ana-dark)}
+  .addr-item.done .addr-chk,.room-item.done .room-chk{background:var(--ana-light);border-color:var(--ana)}
+  .ain{font-size:13px;color:var(--text);font-weight:500}.aihow{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .rin{font-size:13px;color:var(--text);font-weight:500;flex:1}.rin-note{font-size:12px;color:var(--muted);margin-top:2px}
+  .awho-wrap{display:flex;gap:4px;margin-left:auto;flex-shrink:0;padding-left:8px}
+  .awho{font-size:10px;padding:2px 7px;border-radius:10px;white-space:nowrap}
+  .awho.ana{background:var(--ana-light);color:var(--ana-dark)}.awho.ell{background:var(--ell-light);color:var(--ell-dark)}.awho.both{background:var(--both-light);color:var(--both-dark)}
+  .rtag{font-size:10px;padding:2px 7px;border-radius:10px;white-space:nowrap;margin-left:auto;flex-shrink:0}
+  .rtag-buy{background:#E1F5EE;color:#0F6E56}.rtag-research{background:#EEEDFE;color:#3C3489}.rtag-urgent{background:#FAECE7;color:#993C1D}
+  .setup-section{margin-bottom:1.5rem}
+  .setup-section-title{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+  .col-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1.5rem}
+  .col-legend-item{font-size:12px;padding:5px 12px;border-radius:20px}
+  .col-legend-item.ana{background:var(--ana-light);color:var(--ana-dark)}.col-legend-item.ell{background:var(--ell-light);color:var(--ell-dark)}.col-legend-item.shared{background:var(--both-light);color:var(--both-dark)}
+  .pack-item{display:flex;align-items:flex-start;gap:10px;padding:8px 11px;border-radius:var(--r);border:1px solid transparent;cursor:pointer;transition:opacity .15s}
+  .pack-item.done{opacity:.35}.pack-item.done .pin{text-decoration:line-through}
+  .pack-item.pana{background:var(--ana-light);border-color:var(--ana)}.pack-item.pell{background:var(--ell-light);border-color:var(--ell)}.pack-item.pshared{background:var(--both-light);border-color:var(--both)}
+  .pack-chk{width:17px;height:17px;border:1px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;background:rgba(255,255,255,.5)}
+  .pack-item.done .pack-chk{border-color:var(--col)}
+  .pack-who{font-size:10px;font-weight:500;min-width:48px;padding-top:1px;flex-shrink:0}
+  .pack-item.pana .pack-who{color:var(--ana-dark)}.pack-item.pell .pack-who{color:var(--ell-dark)}.pack-item.pshared .pack-who{color:var(--both-dark)}
+  .pin{font-size:13px;color:var(--text);flex:1;line-height:1.4}.pin-note{font-size:11px;color:var(--muted);margin-top:2px}
+  .climate-banner{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:1.5rem}
+  .climate-card{background:var(--col-light);border:1px solid var(--col);border-radius:var(--r);padding:10px 13px}
+  .climate-city{font-size:12px;font-weight:500;color:var(--col-dark);margin-bottom:2px}
+  .climate-detail{font-size:12px;color:var(--col-dark);line-height:1.4}
+  .addr-prog,.home-prog,.pack-prog{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:1rem;overflow:hidden}
+  .addr-prog-fill{height:100%;background:var(--ell);border-radius:2px;transition:width .3s}
+  .home-prog-fill{height:100%;background:var(--ana);border-radius:2px;transition:width .3s}
+  .pack-prog-fill{height:100%;background:var(--col);border-radius:2px;transition:width .3s}
 </style>
 </head>
 <body>
 <div class="site">
   <div class="header">
-    <h1>Moving week — <em>let's go</em></h1>
-    <div class="sub">4–9 May · Anastasia & Elliott · Completion 11–12 May</div>
+    <h1>Moving month — <em>May & June</em></h1>
+    <div class="sub">Anastasia & Elliott · London to Manchester</div>
   </div>
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('week')">This week</button>
+    <button class="tab active" onclick="switchTab('month')">This month</button>
+    <button class="tab" onclick="switchTab('home')">New home</button>
     <button class="tab" onclick="switchTab('address')">Address updates</button>
+    <button class="tab" onclick="switchTab('colombia')">Colombia packing</button>
   </div>
 
-  <div class="tab-panel active" id="tab-week">
+  <div class="tab-panel active" id="tab-month">
     <div class="milestones">
       <div class="mc"><div class="mc-date">Mon 4 May</div><div class="mc-label">Anastasia returns from catsit</div></div>
-      <div class="mc"><div class="mc-date">Tue 5 May</div><div class="mc-label">Exchange contracts</div></div>
+      <div class="mc"><div class="mc-date">Tue 5 May</div><div class="mc-label">Exchange contracts — old home</div></div>
       <div class="mc"><div class="mc-date">Fri 8 May</div><div class="mc-label">Movers AM + Cleaners later</div></div>
       <div class="mc"><div class="mc-date">Sat 9 May</div><div class="mc-label">Move day — Manchester</div></div>
-      <div class="mc"><div class="mc-date">11–12 May</div><div class="mc-label">Completion on new home</div></div>
+      <div class="mc"><div class="mc-date">11–12 May</div><div class="mc-label">Completion — old home</div></div>
+      <div class="mc col"><div class="mc-date">June TBC</div><div class="mc-label">Completion — new home</div></div>
+      <div class="mc col"><div class="mc-date">May TBC</div><div class="mc-label">Colombia — dates to confirm</div></div>
     </div>
     <div class="legend">
-      <div class="legend-item"><div class="dot" style="background:#5DCAA5"></div> Anastasia</div>
-      <div class="legend-item"><div class="dot" style="background:#AFA9EC"></div> Elliott</div>
-      <div class="legend-item"><div class="dot" style="background:#FAC775"></div> Together</div>
-      <div class="legend-item"><div class="dot" style="background:#B4B2A9"></div> Blocked / fixed</div>
+      <div class="legend-item"><div class="dot" style="background:#5DCAA5"></div>Anastasia</div>
+      <div class="legend-item"><div class="dot" style="background:#AFA9EC"></div>Elliott</div>
+      <div class="legend-item"><div class="dot" style="background:#FAC775"></div>Together</div>
+      <div class="legend-item"><div class="dot" style="background:#B4B2A9"></div>Blocked / fixed</div>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="pb"><div class="pf" id="month-pf" style="width:0%;background:var(--ana)"></div></div>
     <div class="days" id="days-container"></div>
-    <div class="sum-strip">
-      <div class="sum-stat"><span class="sum-val" id="s-done">0</span><span class="sum-lab">tasks done</span></div>
-      <div class="sum-stat"><span class="sum-val" id="s-total">0</span><span class="sum-lab">total tasks</span></div>
-      <div class="sum-stat"><span class="sum-val" id="s-pct">0%</span><span class="sum-lab">complete</span></div>
+    <div class="sum">
+      <div><span class="sv" id="s-done">0</span><br><span class="sl">tasks done</span></div>
+      <div><span class="sv" id="s-total">0</span><br><span class="sl">total</span></div>
+      <div><span class="sv" id="s-pct">0%</span><br><span class="sl">complete</span></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-home">
+    <div class="sec-intro">Immediate setup when keys land. Furniture and interiors once you're in. New home completion is June TBC.</div>
+    <div class="home-prog"><div class="home-prog-fill" id="home-pf" style="width:0%"></div></div>
+    <div class="setup-section">
+      <div class="setup-section-title">Immediate — utilities & connectivity</div>
+      <div class="room-items" id="setup-items"></div>
+    </div>
+    <div class="setup-section">
+      <div class="setup-section-title">Furniture & interiors — by room</div>
+      <div class="room-grid" id="room-container"></div>
+    </div>
+    <div class="sum" style="margin-top:1rem">
+      <div><span class="sv" id="h-done">0</span><br><span class="sl">done</span></div>
+      <div><span class="sv" id="h-total">0</span><br><span class="sl">total</span></div>
+      <div><span class="sv" id="h-pct">0%</span><br><span class="sl">complete</span></div>
     </div>
   </div>
 
   <div class="tab-panel" id="tab-address">
-    <div class="addr-intro">Do this after completion 11/12 May — once the new address is yours. Tick off as you go.</div>
-    <div class="addr-prog"><div class="addr-prog-fill" id="addr-prog-fill" style="width:0%"></div></div>
+    <div class="sec-intro">Do this after old home completes (11/12 May) using the Manchester rental address. Update again once new home completes in June.</div>
+    <div class="addr-prog"><div class="addr-prog-fill" id="addr-pf" style="width:0%"></div></div>
     <div class="addr-cats" id="addr-container"></div>
-    <div class="sum-strip" style="margin-top:1.5rem;">
-      <div class="sum-stat"><span class="sum-val" id="a-done">0</span><span class="sum-lab">updated</span></div>
-      <div class="sum-stat"><span class="sum-val" id="a-total">0</span><span class="sum-lab">total</span></div>
-      <div class="sum-stat"><span class="sum-val" id="a-pct">0%</span><span class="sum-lab">complete</span></div>
+    <div class="sum" style="margin-top:1.5rem">
+      <div><span class="sv" id="a-done">0</span><br><span class="sl">updated</span></div>
+      <div><span class="sv" id="a-total">0</span><br><span class="sl">total</span></div>
+      <div><span class="sv" id="a-pct">0%</span><br><span class="sl">complete</span></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-colombia">
+    <div class="climate-banner">
+      <div class="climate-card"><div class="climate-city">Cartagena + Rosario Islands</div><div class="climate-detail">Hot, humid Caribbean. 30–34°C. Light breathable everything.</div></div>
+      <div class="climate-card"><div class="climate-city">Medellín</div><div class="climate-detail">City of Eternal Spring. 22–26°C. Cool evenings — bring a layer.</div></div>
+      <div class="climate-card"><div class="climate-city">Coffee Region</div><div class="climate-detail">Cooler and mistier. 18–24°C. Cold mornings — fleece essential.</div></div>
+    </div>
+    <div class="col-legend">
+      <div class="col-legend-item ana">Ana's bag</div>
+      <div class="col-legend-item ell">Elliott's bag</div>
+      <div class="col-legend-item shared">Shared — one between you</div>
+    </div>
+    <div class="pack-prog"><div class="pack-prog-fill" id="col-pf" style="width:0%"></div></div>
+    <div class="pack-cats" id="col-container"></div>
+    <div class="sum" style="margin-top:1.5rem">
+      <div><span class="sv" id="c-done">0</span><br><span class="sl">packed</span></div>
+      <div><span class="sv" id="c-total">0</span><br><span class="sl">total</span></div>
+      <div><span class="sv" id="c-pct">0%</span><br><span class="sl">ready</span></div>
     </div>
   </div>
 </div>
-
 <script>
-const DAYS = [
-  {
-    name: "Monday", date: "4 May",
-    badges: [{ label: "Anastasia returns", cls: "badge-ms" }],
-    note: "Two hours on the road home — Anastasia arrives tired. Tonight is recovery only. Elliott has a full solo day.",
-    sections: [
-      { label: "Daytime — Elliott solo", tasks: [
-        { who: "Ell", type: "ell", text: "Notify SSE / energy supplier — moving out 11/12 May, request final bill", tag: "admin" },
-        { who: "Ell", type: "ell", text: "Notify water supplier — moving out date, request final bill", tag: "admin" },
-        { who: "Ell", type: "ell", text: "Contact managing agent — notify leaving date re: service charge", tag: "admin" },
-        { who: "Ell", type: "ell", text: "Start packing non-essentials — books, ornaments, anything not needed this week", tag: "pack" },
-      ]},
-      { label: "Evening — Anastasia home", tasks: [
-        { who: "Both", type: "both", text: "Walk through every room together — audit what's left unpacked", tag: "move" },
-        { who: "Both", type: "both", text: "Early night. Proper rest after the journey.", tag: "life" },
-      ]}
-    ]
-  },
-  {
-    name: "Tuesday", date: "5 May",
-    badges: [{ label: "Exchange contracts", cls: "badge-ms" }],
-    note: "Exchange day — both available by phone from midday. Admin sprint, then afternoon packing.",
-    sections: [
-      { label: "Midday — admin", tasks: [
-        { who: "Ell", type: "ell", text: "Chase solicitor first thing — confirm exchange is happening today", tag: "admin" },
-        { who: "Ell", type: "ell", text: "Notify electricity supplier — moving out 11/12 May", tag: "admin" },
-        { who: "Ell", type: "ell", text: "Notify broadband — arrange disconnection or transfer to Manchester", tag: "admin" },
-        { who: "Ell", type: "ell", text: "New home purchase: chase solicitor on the delay — agree next action and deadline", tag: "admin" },
-        { who: "Ana", type: "ana", text: "Book cleaners for Friday 8 May — confirm time slot for after the movers leave", tag: "admin" },
-      ]},
-      { label: "Afternoon — packing", tasks: [
-        { who: "Ana", type: "ana", text: "Pack clothes — everything except one week of outfits", tag: "pack" },
-        { who: "Ana", type: "ana", text: "Pack non-essential toiletries — spares, medicines, hair tools, anything not used daily", tag: "pack" },
-        { who: "Both", type: "both", text: "Kitchen fragiles: wrap vases, glass candles, photo frames — bubble wrap / newspaper", tag: "pack" },
-      ]}
-    ]
-  },
-  {
-    name: "Wednesday", date: "6 May",
-    badges: [],
-    note: "Colombia session while your head is fresh. Gym/spa in the afternoon. Elliott handles kitchen.",
-    sections: [
-      { label: "Midday — Colombia", tasks: [
-        { who: "Ana", type: "ana", text: "Book Colombia — proper headspace session. Flights first, then hotels. Use Amex points. Cartagena + Rosario Islands base, second leg TBD (Medellín / Coffee Region)", tag: "life" },
-      ]},
-      { label: "Afternoon — your time", tasks: [
-        { who: "Ana", type: "ana", text: "Gym / spa — a few hours. You've earned it", tag: "life" },
-        { who: "Ell", type: "ell", text: "While Ana is out: pack kitchen — saucepans, mugs, dry food, all labelled", tag: "pack" },
-        { who: "Ell", type: "ell", text: "Cull the food — donate or bin perishables that won't travel", tag: "move" },
-      ]},
-      { label: "Evening", tasks: [
-        { who: "Ell", type: "ell", text: "Update insurance policies with new address once known — home, contents, any others", tag: "admin" },
-      ]}
-    ]
-  },
-  {
-    name: "Thursday", date: "7 May",
-    badges: [{ label: "Elliott: football eve", cls: "badge-bl" }],
-    note: "Final full packing day. Everything done except overnight bags, daily toiletries, sports kit and PlayStation.",
-    sections: [
-      { label: "Midday", tasks: [
-        { who: "Ana", type: "ana", text: "Pack remaining clothes and shoes — wardrobes fully empty today", tag: "pack" },
-        { who: "Ell", type: "ell", text: "Disassemble anything needed — TV stand, shelves, flat pack furniture", tag: "move" },
-        { who: "Both", type: "both", text: "Room-by-room check — anything still not packed? Label every box with destination room", tag: "move" },
-      ]},
-      { label: "Afternoon", tasks: [
-        { who: "Ana", type: "ana", text: "Photograph meter readings — electricity and gas. Timestamp the photos", tag: "admin" },
-        { who: "Both", type: "both", text: "Pack essentials bag — kettle, mugs, chargers, toilet roll, snacks, one set of bedding each", tag: "pack" },
-        { who: "Both", type: "both", text: "Confirm Saturday logistics — separate rides sorted, arrival time at new place agreed", tag: "move" },
-        { who: "Ell", type: "ell", text: "New home purchase: call solicitor — push for a clear resolution date on planning issue", tag: "admin" },
-      ]},
-      { label: "Evening — Elliott out", tasks: [
-        { who: "Ell", type: "blocked", text: "Elliott: football", tag: null },
-        { who: "Ell", type: "ell", text: "After football: pack sports kit — boots, kit bag, gym gear, all sports equipment", tag: "pack" },
-        { who: "Ell", type: "ell", text: "After football: pack PlayStation — console, controllers, cables, games", tag: "pack" },
-        { who: "Ana", type: "ana", text: "Order dinner in, decompress. Nearly there.", tag: "life" },
-      ]}
-    ]
-  },
-  {
-    name: "Friday", date: "8 May",
-    badges: [{ label: "Movers AM", cls: "badge-ms" }, { label: "Cleaners later", cls: "badge-ms" }],
-    note: "Earlier start needed — movers are morning. Last-minute items packed before they arrive.",
-    sections: [
-      { label: "First thing — last-minute pack", tasks: [
-        { who: "Ana", type: "ana", text: "Pack daily-use toiletries — the stuff you've been using all week. Leave out absolute minimum for tonight", tag: "pack" },
-        { who: "Ell", type: "ell", text: "Pack his daily toiletries — everything left in the bathroom", tag: "pack" },
-        { who: "Ell", type: "ell", text: "Confirm PlayStation and sports kit are boxed if not fully done last night", tag: "pack" },
-      ]},
-      { label: "Morning — movers", tasks: [
-        { who: "Both", type: "blocked", text: "MOVERS arrive — doors open, everything labelled and accessible", tag: null },
-        { who: "Ana", type: "ana", text: "Oversee fragile items loading — vases, frames, glass candles", tag: "move" },
-        { who: "Ell", type: "ell", text: "Handle paperwork with movers — confirm Manchester delivery window", tag: "admin" },
-      ]},
-      { label: "After movers", tasks: [
-        { who: "Both", type: "blocked", text: "CLEANERS arrive — hand over and brief on what needs doing", tag: null },
-        { who: "Both", type: "both", text: "Final walkthrough — every cupboard, drawer, shelf, loft, outside space", tag: "move" },
-        { who: "Ana", type: "ana", text: "Final meter reads + photos — send to suppliers today", tag: "admin" },
-      ]},
-      { label: "Evening", tasks: [
-        { who: "Both", type: "both", text: "Dinner out or a proper takeaway — you've absolutely earned it", tag: "life" },
-      ]}
-    ]
-  },
-  {
-    name: "Saturday", date: "9 May",
-    badges: [{ label: "Move day — Manchester", cls: "badge-ms" }],
-    note: "The big one. Separate rides north. Celebrate when you arrive.",
-    sections: [
-      { label: "Morning", tasks: [
-        { who: "Both", type: "both", text: "Final sweep — every room, every cupboard. Cats settled for the journey?", tag: "move" },
-        { who: "Ell", type: "ell", text: "Hand keys back to landlord / managing agent", tag: "admin" },
-        { who: "Both", type: "blocked", text: "Separate rides to Manchester — coordinate arrival time", tag: null },
-      ]},
-      { label: "Arrival", tasks: [
-        { who: "Both", type: "both", text: "Essentials bag first — kettle on, cats settled, beds made", tag: "move" },
-        { who: "Both", type: "both", text: "Unpack only what you need tonight. The rest can wait.", tag: "life" },
-        { who: "Both", type: "both", text: "Order food, open something good — you did it", tag: "life" },
-      ]}
-    ]
-  }
-];
+const DAYS=[{name:"Monday",date:"4 May",badges:[{label:"Anastasia returns",cls:"badge-ms"}],note:"Two hours on the road home — Anastasia arrives tired. Tonight is recovery only. Elliott has a full solo day. Tue/Wed/Thu are the main productive days this week.",sections:[{label:"Daytime — Elliott solo",tasks:[{who:"Ell",type:"ell",text:"Notify SSE / energy supplier — moving out 11/12 May, request final bill",tag:"admin"},{who:"Ell",type:"ell",text:"Notify water supplier — moving out date, request final bill",tag:"admin"},{who:"Ell",type:"ell",text:"Contact managing agent — notify leaving date re: service charge",tag:"admin"},{who:"Ell",type:"ell",text:"Start packing non-essentials — books, ornaments, anything not needed this week",tag:"pack"}]},{label:"Evening — Anastasia home",tasks:[{who:"Both",type:"both",text:"Walk through every room — audit what's left to pack",tag:"move"},{who:"Both",type:"both",text:"Early night. Proper rest after the journey.",tag:"life"}]}]},{name:"Tuesday",date:"5 May",badges:[{label:"Exchange contracts",cls:"badge-ms"}],note:"Exchange day — both available by phone. Main admin and packing day.",sections:[{label:"Midday — admin sprint",tasks:[{who:"Ell",type:"ell",text:"Chase solicitor — confirm exchange is happening today",tag:"admin"},{who:"Ell",type:"ell",text:"Notify electricity supplier — moving out 11/12 May",tag:"admin"},{who:"Ell",type:"ell",text:"Notify broadband — arrange disconnection or transfer to Manchester",tag:"admin"},{who:"Ell",type:"ell",text:"New home purchase: chase solicitor on delay — agree next action and deadline",tag:"admin"},{who:"Ana",type:"ana",text:"Book cleaners for Friday 8 May — confirm slot for after movers leave",tag:"admin"}]},{label:"Afternoon — packing",tasks:[{who:"Ana",type:"ana",text:"Pack clothes — everything except one week of outfits",tag:"pack"},{who:"Ana",type:"ana",text:"Pack non-essential toiletries — spares, medicines, hair tools, anything not used daily",tag:"pack"},{who:"Both",type:"both",text:"Kitchen fragiles: wrap vases, glass candles, photo frames — bubble wrap / newspaper",tag:"pack"}]}]},{name:"Wednesday",date:"6 May",badges:[],note:"Colombia booking while your head is fresh. Gym/spa after. Elliott handles kitchen.",sections:[{label:"Midday — Colombia booking",tasks:[{who:"Ana",type:"ana",text:"Book Colombia — flights first, then hotels. Amex points where possible. Cartagena + Rosario Islands base, second leg TBD",tag:"life"}]},{label:"Afternoon — your time + kitchen",tasks:[{who:"Ana",type:"ana",text:"Gym / spa — non-negotiable. Block it and go.",tag:"life"},{who:"Ell",type:"ell",text:"Pack kitchen — saucepans, mugs, dry food, all labelled by destination room",tag:"pack"},{who:"Ell",type:"ell",text:"Cull the food — donate or bin perishables that won't travel",tag:"move"},{who:"Ell",type:"ell",text:"Update insurance policies — home, contents, any others",tag:"admin"}]}]},{name:"Thursday",date:"7 May",badges:[{label:"Elliott: football eve",cls:"badge-bl"}],note:"Final full packing day. Everything done except overnight bags, daily toiletries, sports kit and PlayStation.",sections:[{label:"Midday — final packing",tasks:[{who:"Ana",type:"ana",text:"Pack remaining clothes and shoes — wardrobes fully empty today",tag:"pack"},{who:"Ell",type:"ell",text:"Disassemble anything needed — TV stand, shelves, flat pack",tag:"move"},{who:"Both",type:"both",text:"Room-by-room check — anything still not packed? Label every box with destination room",tag:"move"}]},{label:"Afternoon — admin",tasks:[{who:"Ana",type:"ana",text:"Photograph meter readings — electricity and gas. Timestamp the photos.",tag:"admin"},{who:"Both",type:"both",text:"Pack essentials bag — kettle, mugs, chargers, toilet roll, snacks, one set bedding each",tag:"pack"},{who:"Both",type:"both",text:"Confirm Saturday logistics — separate rides, arrival time agreed",tag:"move"},{who:"Ell",type:"ell",text:"New home purchase: call solicitor — push for clear resolution date on planning issue",tag:"admin"}]},{label:"Evening — Elliott out",tasks:[{who:"Ell",type:"blocked",text:"Elliott: football",tag:null},{who:"Ell",type:"ell",text:"After football: pack sports kit — boots, kit bag, gym gear",tag:"pack"},{who:"Ell",type:"ell",text:"After football: pack PlayStation — console, controllers, cables, games",tag:"pack"},{who:"Ana",type:"ana",text:"Order dinner in, decompress. Nearly there.",tag:"life"}]}]},{name:"Friday",date:"8 May",badges:[{label:"Movers AM",cls:"badge-ms"},{label:"Cleaners later",cls:"badge-ms"}],note:"Earlier start needed — movers are morning. Last-minute items packed before they arrive.",sections:[{label:"First thing — last-minute",tasks:[{who:"Ana",type:"ana",text:"Pack daily-use toiletries — everything used this week, leave out absolute minimum",tag:"pack"},{who:"Ell",type:"ell",text:"Pack his daily toiletries — everything remaining in the bathroom",tag:"pack"},{who:"Ell",type:"ell",text:"Confirm PlayStation and sports kit are fully boxed",tag:"pack"}]},{label:"Morning — movers",tasks:[{who:"Both",type:"blocked",text:"MOVERS arrive — doors open, everything labelled and accessible",tag:null},{who:"Ana",type:"ana",text:"Oversee fragile items loading — vases, frames, glass candles",tag:"move"},{who:"Ell",type:"ell",text:"Handle paperwork with movers — confirm Manchester delivery window",tag:"admin"}]},{label:"After movers",tasks:[{who:"Both",type:"blocked",text:"CLEANERS arrive — hand over and brief on what needs doing",tag:null},{who:"Both",type:"both",text:"Final walkthrough — every cupboard, drawer, shelf, loft, outside space",tag:"move"},{who:"Ana",type:"ana",text:"Final meter reads + photos — send to suppliers today",tag:"admin"},{who:"Both",type:"both",text:"Dinner out or proper takeaway — you've absolutely earned it",tag:"life"}]}]},{name:"Saturday",date:"9 May",badges:[{label:"Move day — Manchester",cls:"badge-ms"}],note:"The big one. Separate rides north. Celebrate when you arrive.",sections:[{label:"Morning",tasks:[{who:"Both",type:"both",text:"Final sweep — every room, every cupboard. Cats settled for the journey?",tag:"move"},{who:"Ell",type:"ell",text:"Hand keys back to landlord / managing agent",tag:"admin"},{who:"Both",type:"blocked",text:"Separate rides to Manchester — coordinate arrival time",tag:null}]},{label:"Arrival",tasks:[{who:"Both",type:"both",text:"Essentials bag first — kettle on, cats settled, beds made",tag:"move"},{who:"Both",type:"both",text:"Unpack only what you need tonight. Rest can wait.",tag:"life"},{who:"Both",type:"both",text:"Order food, open something good — you did it",tag:"life"}]}]},{name:"Week of 12 May",date:"Completion — old home",badges:[{label:"Completion 11–12 May",cls:"badge-ms"}],note:"Old home completes. First week in Manchester. Tue/Wed/Thu are your productive days.",sections:[{label:"Completion day",tasks:[{who:"Ana",type:"ana",text:"Send final meter reads to old suppliers if not done Friday",tag:"admin"},{who:"Both",type:"both",text:"Confirm completion with solicitor — funds transferred",tag:"admin"}]},{label:"Tue–Thu — admin days",tasks:[{who:"Ell",type:"ell",text:"Register with United Utilities (water) at Manchester address",tag:"admin"},{who:"Ell",type:"ell",text:"Set up electricity and gas at Manchester address",tag:"admin"},{who:"Ell",type:"ell",text:"Register for council tax with local Manchester authority",tag:"admin"},{who:"Ell",type:"ell",text:"Chase broadband install — book ASAP, 2+ week lead times",tag:"admin"},{who:"Both",type:"both",text:"Work through address updates tab — banks, HMRC, GP etc.",tag:"admin"},{who:"Both",type:"both",text:"Register to vote at new Manchester address — gov.uk/register-to-vote",tag:"admin"},{who:"Both",type:"both",text:"Find and register with a Manchester GP surgery",tag:"admin"}]},{label:"Settling in",tasks:[{who:"Both",type:"both",text:"Unpack properly — bedroom first, then kitchen, then living room",tag:"move"},{who:"Both",type:"both",text:"Explore the neighbourhood — find your coffee shop, supermarket, gym",tag:"life"}]}]},{name:"Week of 19 May",date:"Settling in",badges:[],note:"First full productive week. Tue/Wed/Thu for home tasks and admin. Start making it feel like yours.",sections:[{label:"Tue–Thu — home and admin",tasks:[{who:"Both",type:"both",text:"Walk each room and agree colour / vibe direction before ordering anything",tag:"home"},{who:"Ana",type:"ana",text:"Research fitted wardrobe companies — Sharps, Hammonds, local bespoke joiners. Get 2–3 quotes.",tag:"home"},{who:"Ana",type:"ana",text:"Order king bed and mattress for bedroom 1 — check lead times",tag:"home"},{who:"Both",type:"both",text:"Order sofa for lounge — measure the space carefully first",tag:"home"},{who:"Ell",type:"ell",text:"New home purchase: chase solicitor — what's the current blocker and June completion timeline?",tag:"admin"}]},{label:"Life",tasks:[{who:"Both",type:"both",text:"Explore Manchester — restaurants, bars, areas. Off Menu recs!",tag:"life"},{who:"Ana",type:"ana",text:"Join a gym or find a regular spa in Manchester",tag:"life"},{who:"Both",type:"both",text:"Confirm Colombia bookings, sort travel insurance, book jabs appointment",tag:"life"}]}]},{name:"Week of 26 May",date:"End of May",badges:[{label:"Colombia TBC",cls:"badge-col"}],note:"Colombia dates TBC — add when confirmed. Otherwise: furniture arriving, home taking shape. Tue/Wed/Thu are productive days.",sections:[{label:"Tue–Thu",tasks:[{who:"Both",type:"both",text:"Colombia — if this week, see packing list tab. Jabs done?",tag:"life"},{who:"Both",type:"both",text:"Chase any outstanding furniture deliveries",tag:"home"},{who:"Ana",type:"ana",text:"Book fitted wardrobe survey / quote appointment",tag:"home"},{who:"Both",type:"both",text:"Garden furniture — measure, agree style, order",tag:"home"},{who:"Ell",type:"ell",text:"New home purchase: finalise solicitor timeline — June completion on track?",tag:"admin"},{who:"Both",type:"both",text:"Review address updates tab — anything still outstanding?",tag:"admin"}]}]}];
 
-const ADDRESS_CATS = [
-  { title: "Financial", items: [
-    { name: "Current account(s)", how: "Online banking or app — both of you", who: "both" },
-    { name: "Savings accounts", how: "Online banking or in branch", who: "both" },
-    { name: "Credit cards", how: "Each card provider — app or online", who: "both" },
-    { name: "Pension provider(s)", how: "Online portal or call provider", who: "both" },
-    { name: "Investment / ISA accounts", how: "Online portal", who: "both" },
-  ]},
-  { title: "Insurance", items: [
-    { name: "Home & contents insurance", how: "Call or online — update to Manchester address", who: "both" },
-    { name: "Car insurance", how: "Call or online — address change can affect premium", who: "both" },
-    { name: "Life / health insurance", how: "Online portal or call provider", who: "both" },
-    { name: "Pet insurance (cats)", how: "Online or call", who: "ana" },
-  ]},
-  { title: "Government & official", items: [
-    { name: "HMRC", how: "Personal tax account at gov.uk — both of you", who: "both" },
-    { name: "Electoral roll", how: "Register at gov.uk/register-to-vote with new Manchester address", who: "both" },
-    { name: "Passport", how: "No action needed — address not held on passport", who: "both" },
-  ]},
-  { title: "Healthcare", items: [
-    { name: "GP surgery", how: "Register with a new Manchester GP — old registration drops off automatically", who: "both" },
-    { name: "Dentist", how: "Contact current dentist or find a new one in Manchester", who: "both" },
-    { name: "Optician", how: "Update records at your optician", who: "both" },
-    { name: "Prescriptions / repeat medications", how: "Nominate a new Manchester pharmacy", who: "both" },
-  ]},
-  { title: "Subscriptions & work", items: [
-    { name: "Amazon", how: "Account settings — update default delivery address", who: "both" },
-    { name: "Gym membership", how: "App or online — or transfer to a Manchester gym", who: "both" },
-    { name: "Any delivery subscriptions", how: "App or website for each", who: "both" },
-    { name: "Employer / payroll HR", how: "Email HR with new address for payslips and records", who: "both" },
-    { name: "Professional memberships (CIM etc.)", how: "Online member portal", who: "ana" },
-  ]},
-  { title: "Utilities — new home", items: [
-    { name: "Set up electricity at new address", how: "Contact supplier or switch via Uswitch", who: "ell" },
-    { name: "Set up gas at new address", how: "Contact supplier or switch", who: "ell" },
-    { name: "Set up water — United Utilities", how: "Register with United Utilities (local Manchester provider)", who: "ell" },
-    { name: "Book broadband install", how: "Do this ASAP — lead times can be 2+ weeks", who: "ell" },
-    { name: "Council tax", how: "Register with your local Manchester authority", who: "ell" },
-  ]},
-  { title: "Post & contacts", items: [
-    { name: "Royal Mail redirect", how: "Set up at royalmail.com once you have the new address confirmed", who: "both" },
-    { name: "Friends & family", how: "WhatsApp / message to let people know", who: "both" },
-    { name: "Online shopping accounts", how: "Update default address in each account (ASOS etc.)", who: "both" },
-  ]}
-];
+const SETUP_ITEMS=[{name:"Book broadband install",note:"Do this the day you get keys — 2+ week lead times. BT, Virgin, Sky all serve Manchester.",tag:"urgent"},{name:"Set up electricity at new address",note:"Contact supplier or compare via Uswitch",tag:"urgent"},{name:"Set up gas at new address",note:"Contact supplier or switch",tag:"urgent"},{name:"Register with United Utilities (water)",note:"Local Manchester provider — unitedutilities.com",tag:"urgent"},{name:"Register for council tax",note:"Contact your local Manchester authority",tag:"urgent"},{name:"Take meter readings on day one",note:"Electricity and gas — photograph and timestamp immediately",tag:"urgent"}];
 
-const container = document.getElementById('days-container');
-let allTasks = [];
+const ROOMS=[{name:"Bedroom 1 — main",items:[{name:"King bed frame",note:"Measure the room and doorway clearance before ordering. Check delivery lead time.",tag:"buy"},{name:"King mattress",note:"Allow 2–4 weeks for most brands. Order at same time as frame.",tag:"buy"},{name:"Bedside tables x2",note:"Match or complement the bed frame style",tag:"buy"},{name:"Full length mirror",note:"Freestanding or wall-mounted — decide before ordering",tag:"buy"},{name:"Research fitted wardrobes",note:"Sharps, Hammonds, local bespoke joiners — get 2–3 quotes. Long lead times, do this early.",tag:"research"},{name:"Agree colour and vibe",note:"Paint, curtains, rug — nail the direction before buying anything",tag:"research"}]},{name:"Bedroom 2",items:[{name:"Research fitted wardrobes",note:"Get quotes at same time as bedroom 1 — potential for a package deal",tag:"research"},{name:"Agree colour and vibe",note:"Paint, textiles, lighting direction",tag:"research"}]},{name:"Bedroom 3 — office",items:[{name:"Standing desk",note:"Electric height-adjustable recommended. Measure space first. Flexispot, Autonomous, IKEA Bekant all worth looking at.",tag:"buy"},{name:"Office chair",note:"Ergonomic — worth spending on if working from home regularly",tag:"buy"},{name:"Agree colour and vibe",note:"Functional but not sterile. Think about lighting for video calls.",tag:"research"}]},{name:"Lounge",items:[{name:"Sofa",note:"Measure carefully including delivery route. Corner or straight? Made-to-order can take 8–16 weeks.",tag:"buy"},{name:"Armchair",note:"Accent chair — great opportunity for a colour or texture moment",tag:"buy"},{name:"Coffee table",note:"Coordinate with sofa style",tag:"buy"},{name:"TV unit / media stand",note:"Check TV size and viewing distance before buying",tag:"buy"},{name:"Rug",note:"Anchor the seating area — go bigger than you think",tag:"buy"},{name:"Agree colour and vibe",note:"Tone, palette, lighting — the lounge sets the mood for the whole home",tag:"research"}]},{name:"Garden",items:[{name:"Garden dining set",note:"Measure the space. Table and chairs for outdoor dining.",tag:"buy"},{name:"Lounge / relaxing furniture",note:"Sun loungers or a sofa set — depends on garden size",tag:"buy"},{name:"Outdoor lighting",note:"String lights, lanterns — easy win for atmosphere",tag:"buy"},{name:"Planters and greenery",note:"Low maintenance plants",tag:"buy"}]},{name:"Whole home",items:[{name:"Research paint colours for each room",note:"Farrow & Ball, Little Greene, Lick — get sample pots before committing",tag:"research"},{name:"Lighting audit",note:"Walk each room — what exists? What needs adding?",tag:"research"},{name:"Window treatments",note:"Curtains, blinds, or both — measure every window",tag:"research"}]}];
 
-DAYS.forEach((day, di) => {
-  const card = document.createElement('div');
-  card.className = 'day-card';
-  const badges = day.badges.map(b => `<span class="badge ${b.cls}">${b.label}</span>`).join('');
-  card.innerHTML = `
-    <div class="day-header" onclick="toggleDay(${di})">
-      <div class="day-title-group">
-        <span class="day-name">${day.name}</span>
-        <span class="day-date">${day.date}</span>
-      </div>
-      <div class="day-badges">${badges}<span class="chev" id="chev-${di}">▼</span></div>
-    </div>
-    <div class="day-body" id="body-${di}">
-      <div class="note-strip">10:30–12:00 — slow start: coffee, breakfast, light tidy. ${day.note}</div>
-      <div class="tasks" id="tasks-${di}"></div>
-    </div>`;
-  container.appendChild(card);
-  const tasksEl = card.querySelector(`#tasks-${di}`);
-  day.sections.forEach(sec => {
-    const lbl = document.createElement('div');
-    lbl.className = 'sec-label';
-    lbl.textContent = sec.label;
-    tasksEl.appendChild(lbl);
-    sec.tasks.forEach((t, ti) => {
-      const id = `t-${di}-${ti}`;
-      allTasks.push(id);
-      const div = document.createElement('div');
-      div.className = `task ${t.type}`;
-      div.id = id;
-      div.innerHTML = `<span class="task-who">${t.who}</span><span class="task-text">${t.text}</span>${t.tag ? `<span class="task-tag tag-${t.tag}">${t.tag}</span>` : ''}`;
-      div.onclick = () => toggleTask(id);
-      tasksEl.appendChild(div);
-    });
-  });
-});
+const ADDRESS_CATS=[{title:"Financial",items:[{name:"Current account(s)",how:"Online banking or app — both of you",who:"both"},{name:"Savings accounts",how:"Online banking or in branch",who:"both"},{name:"Credit cards",how:"Each card provider — app or online",who:"both"},{name:"Pension provider(s)",how:"Online portal or call provider",who:"both"},{name:"Investment / ISA accounts",how:"Online portal",who:"both"}]},{title:"Insurance",items:[{name:"Home & contents insurance",how:"Call or online — update to Manchester address",who:"both"},{name:"Car insurance",how:"Call or online — address change can affect premium",who:"both"},{name:"Life / health insurance",how:"Online portal or call provider",who:"both"},{name:"Pet insurance (cats)",how:"Online or call",who:"ana"}]},{title:"Government & official",items:[{name:"HMRC",how:"Personal tax account at gov.uk — both of you",who:"both"},{name:"Electoral roll",how:"Register at gov.uk/register-to-vote with new Manchester address",who:"both"},{name:"Passport",how:"No action needed — address not held on passport",who:"both"}]},{title:"Healthcare",items:[{name:"GP surgery",how:"Register with a new Manchester GP — old registration drops off automatically",who:"both"},{name:"Dentist",how:"Contact current dentist or find a new one in Manchester",who:"both"},{name:"Optician",how:"Update records at your optician",who:"both"},{name:"Prescriptions / repeat medications",how:"Nominate a new Manchester pharmacy",who:"both"}]},{title:"Subscriptions & work",items:[{name:"Amazon",how:"Account settings — update default delivery address",who:"both"},{name:"Gym membership",how:"App or online — or transfer to a Manchester gym",who:"both"},{name:"Any delivery subscriptions",how:"App or website for each",who:"both"},{name:"Employer / payroll HR",how:"Email HR with new address for payslips and records",who:"both"},{name:"Professional memberships (CIM etc.)",how:"Online member portal",who:"ana"}]},{title:"Utilities — new home",items:[{name:"Set up electricity at new address",how:"Contact supplier or switch via Uswitch",who:"ell"},{name:"Set up gas at new address",how:"Contact supplier or switch",who:"ell"},{name:"Set up water — United Utilities",how:"Register at unitedutilities.com",who:"ell"},{name:"Book broadband install",how:"Do this ASAP — 2+ week lead times",who:"ell"},{name:"Council tax",how:"Register with your local Manchester authority",who:"ell"}]},{title:"Post & contacts",items:[{name:"Royal Mail redirect",how:"Set up at royalmail.com once new address confirmed",who:"both"},{name:"Friends & family",how:"WhatsApp / message to let people know",who:"both"},{name:"Online shopping accounts",how:"Update default address in each (ASOS etc.)",who:"both"}]}];
 
-const addrContainer = document.getElementById('addr-container');
-let allAddrItems = [];
+const COLOMBIA_CATS=[{name:"Tops",items:[{name:"Lightweight breathable t-shirts x5–6",note:"Linen or technical. You'll sweat through them in Cartagena.",owner:"ana"},{name:"Smarter going-out tops x2",note:"For Medellín evenings and Cartagena Old City — Colombians dress up",owner:"ana"},{name:"Light long-sleeve top x1",note:"Sun protection on the islands and cooler Coffee Region mornings",owner:"ana"},{name:"Lightweight breathable t-shirts x5–6",note:"Linen or technical. Pack more than you think for Cartagena.",owner:"ell"},{name:"Smarter going-out shirts x2",note:"For evenings in Medellín and Cartagena Old City",owner:"ell"},{name:"Light long-sleeve top x1",note:"Sun protection / cooler inland mornings",owner:"ell"}]},{name:"Bottoms",items:[{name:"Lightweight trousers or chinos x2",note:"For evenings and city exploring",owner:"ana"},{name:"Shorts x2–3",note:"For Cartagena and the Rosario Islands",owner:"ana"},{name:"Jeans x1 max (optional)",note:"Heavy and slow to dry — consider skipping",owner:"ana"},{name:"Lightweight chinos or trousers x2",note:"For evenings and city days",owner:"ell"},{name:"Shorts x2–3",note:"For Cartagena and the islands",owner:"ell"},{name:"Jeans x1 max (optional)",note:"One pair maximum — heavy and slow to dry",owner:"ell"}]},{name:"Layers",items:[{name:"Light jacket or zip-up fleece",note:"Needed for Coffee Region mornings and Medellín evenings",owner:"ana"},{name:"Lightweight packable waterproof",note:"For afternoon mountain showers — folds into a pocket",owner:"ana"},{name:"Light jacket or zip-up fleece",note:"Coffee Region mornings get cold — don't skip this",owner:"ell"},{name:"Lightweight packable waterproof",note:"Mountain showers in the Coffee Region",owner:"ell"}]},{name:"Beach & swim",items:[{name:"Swimwear x2",note:"Two sets so one is always dry",owner:"ana"},{name:"Light beach cover-up or kaftan",note:"For moving between beach and lunch at Rosario Islands",owner:"ana"},{name:"Beach bag / tote",note:"Light and packable",owner:"ana"},{name:"Swim shorts x2",note:"Two sets so one is always dry",owner:"ell"},{name:"Waterproof dry bag",note:"Essential for Rosario Islands boat transfers — share one",owner:"shared"}]},{name:"Footwear",items:[{name:"Comfortable walking trainers or light hiking shoes",note:"For Cocora Valley and city days. Break them in before you go.",owner:"ana"},{name:"Sandals",note:"For Cartagena and the islands",owner:"ana"},{name:"One smarter pair",note:"For evenings — smart casual is fine",owner:"ana"},{name:"Comfortable walking trainers or light hiking shoes",note:"For Cocora Valley and city exploring. Break in beforehand.",owner:"ell"},{name:"Sandals",note:"For Cartagena and the islands",owner:"ell"},{name:"One smarter pair",note:"For evenings out",owner:"ell"}]},{name:"Health & protection",items:[{name:"Reef-safe suncream SPF50 x2 bottles",note:"Bring from UK — expensive in Colombia. Share between you.",owner:"shared"},{name:"DEET 50% insect repellent",note:"Essential. Dengue risk — apply at dawn and dusk. Bring enough for the full trip.",owner:"shared"},{name:"After-sun / aloe vera",note:"Cartagena heat is no joke. Share.",owner:"shared"},{name:"Travel first aid kit",note:"Ibuprofen, antihistamines, rehydration sachets, plasters. One between you.",owner:"shared"},{name:"Her prescribed medications + prescription copies",note:"Keep in hand luggage",owner:"ana"},{name:"His prescribed medications + prescription copies",note:"Keep in hand luggage",owner:"ell"},{name:"Hepatitis A vaccination",note:"Book travel clinic — standard for food/water exposure",owner:"shared"},{name:"Typhoid vaccination",note:"Recommended — especially eating street food (you will be)",owner:"shared"},{name:"Yellow fever vaccination + carry certificate",note:"Recommended given current Colombia outbreak. May be checked at domestic transport hubs.",owner:"shared"},{name:"Check Tetanus / MMR boosters are current",note:"Routine UK jabs — just confirm before travel",owner:"shared"}]},{name:"Documents & money",items:[{name:"Passport",note:"Check expiry — 6+ months validity beyond travel dates",owner:"ana"},{name:"Passport",note:"Check expiry — 6+ months validity beyond travel dates",owner:"ell"},{name:"Travel insurance documents",note:"Printed + digital copies. One policy covering both.",owner:"shared"},{name:"Yellow fever certificates",note:"One each — may be checked at Colombian domestic transport hubs",owner:"shared"},{name:"Flight and hotel confirmations",note:"Downloaded offline as well as emailed",owner:"shared"},{name:"Colombian pesos / USD cash",note:"USD widely accepted in tourist areas. Have pesos for markets and taxis.",owner:"shared"},{name:"Notify banks of travel dates",note:"Both of you — avoid cards being blocked abroad",owner:"shared"}]},{name:"Tech & practical",items:[{name:"Universal travel adapter",note:"Colombia uses type A/B plugs (same as US) — UK adapter needed. One between you.",owner:"shared"},{name:"Portable charger / power bank",note:"Her own — full charge before every day out",owner:"ana"},{name:"Portable charger / power bank",note:"His own — full charge before every day out",owner:"ell"},{name:"Waterproof phone case",note:"One each — for Rosario Islands boat and beach days",owner:"shared"},{name:"Packing cubes",note:"Genuinely useful when moving between locations",owner:"shared"},{name:"Colombian eSIM",note:"Claro or Movistar — much cheaper than roaming. One each.",owner:"shared"},{name:"Headphones",note:"For the flights",owner:"ana"},{name:"Headphones",note:"For the flights",owner:"ell"},{name:"Camera / clear phone storage",note:"Sort before packing",owner:"shared"}]},{name:"What NOT to bring",items:[{name:"Flashy watches, jewellery, designer bags",note:"Leave anything you'd be genuinely upset to lose at home",owner:"shared"},{name:"More than one pair of jeans each",note:"Too heavy and too slow to dry",owner:"shared"},{name:"Thick fabrics or heavy layers",note:"A light jacket is enough",owner:"shared"},{name:"Expensive camera gear without a plan",note:"Be aware of where and how you're using it",owner:"shared"}]}];
 
-ADDRESS_CATS.forEach((cat, ci) => {
-  const block = document.createElement('div');
-  block.className = 'addr-cat';
-  block.innerHTML = `
-    <div class="addr-cat-hdr">
-      <span class="addr-cat-title">${cat.title}</span>
-      <span class="addr-cat-ct" id="cat-ct-${ci}">0 / ${cat.items.length}</span>
-    </div>
-    <div class="addr-items" id="addr-items-${ci}"></div>`;
-  addrContainer.appendChild(block);
-  const itemsEl = block.querySelector(`#addr-items-${ci}`);
-  cat.items.forEach((item, ii) => {
-    const id = `a-${ci}-${ii}`;
-    allAddrItems.push({ id, ci });
-    const div = document.createElement('div');
-    div.className = 'addr-item';
-    div.id = id;
-    const wb = item.who === 'both' ? `<span class="awho both">Both</span>`
-      : item.who === 'ana' ? `<span class="awho ana">Ana</span>`
-      : `<span class="awho ell">Ell</span>`;
-    div.innerHTML = `
-      <div class="addr-chk" id="chk-${id}"></div>
-      <div style="flex:1;min-width:0;">
-        <div class="ain">${item.name}</div>
-        <div class="aihow">${item.how}</div>
-      </div>
-      <div class="awho-wrap">${wb}</div>`;
-    div.onclick = () => toggleAddr(id, ci);
-    itemsEl.appendChild(div);
-  });
-});
+const daysContainer=document.getElementById('days-container');let allMonthTasks=[];
+DAYS.forEach((day,di)=>{const card=document.createElement('div');card.className='day-card';const badges=(day.badges||[]).map(b=>`<span class="badge ${b.cls}">${b.label}</span>`).join('');card.innerHTML=`<div class="day-header" onclick="toggleDay(${di})"><div class="day-title-group"><span class="day-name">${day.name}</span><span class="day-date">${day.date}</span></div><div class="day-badges">${badges}<span class="chev" id="chev-${di}">▼</span></div></div><div class="day-body" id="body-${di}"><div class="note-strip">${day.note}</div><div class="tasks" id="tasks-${di}"></div></div>`;daysContainer.appendChild(card);const te=card.querySelector(`#tasks-${di}`);day.sections.forEach(sec=>{const l=document.createElement('div');l.className='sec-label';l.textContent=sec.label;te.appendChild(l);sec.tasks.forEach((t,ti)=>{const id=`mt-${di}-${ti}`;allMonthTasks.push(id);const d=document.createElement('div');d.className=`task ${t.type}`;d.id=id;d.innerHTML=`<span class="task-who">${t.who}</span><span class="task-text">${t.text}</span>${t.tag?`<span class="task-tag tag-${t.tag}">${t.tag}</span>`:''}`;d.onclick=()=>toggleMonthTask(id);te.appendChild(d);});});});
 
-function toggleDay(di) {
-  const body = document.getElementById(`body-${di}`);
-  const chev = document.getElementById(`chev-${di}`);
-  const open = body.classList.toggle('open');
-  chev.classList.toggle('open', open);
-}
-function toggleTask(id) {
-  document.getElementById(id).classList.toggle('done');
-  updateProg();
-}
-function toggleAddr(id, ci) {
-  const el = document.getElementById(id);
-  el.classList.toggle('done');
-  document.getElementById('chk-' + id).textContent = el.classList.contains('done') ? '✓' : '';
-  updateAddrProg(ci);
-}
-function updateProg() {
-  const done = document.querySelectorAll('#tab-week .task.done').length;
-  const total = allTasks.length;
-  const pct = total ? Math.round(done / total * 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('s-done').textContent = done;
-  document.getElementById('s-total').textContent = total;
-  document.getElementById('s-pct').textContent = pct + '%';
-}
-function updateAddrProg(ci) {
-  const catItems = allAddrItems.filter(i => i.ci === ci);
-  const catDone = catItems.filter(i => document.getElementById(i.id).classList.contains('done')).length;
-  document.getElementById(`cat-ct-${ci}`).textContent = `${catDone} / ${catItems.length}`;
-  const totalDone = allAddrItems.filter(i => document.getElementById(i.id).classList.contains('done')).length;
-  const total = allAddrItems.length;
-  const pct = total ? Math.round(totalDone / total * 100) : 0;
-  document.getElementById('addr-prog-fill').style.width = pct + '%';
-  document.getElementById('a-done').textContent = totalDone;
-  document.getElementById('a-total').textContent = total;
-  document.getElementById('a-pct').textContent = pct + '%';
-}
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (tab === 'week')));
-  document.getElementById('tab-week').classList.toggle('active', tab === 'week');
-  document.getElementById('tab-address').classList.toggle('active', tab === 'address');
-}
+let allHomeItems=[];const sc=document.getElementById('setup-items');SETUP_ITEMS.forEach((item,i)=>{const id=`si-${i}`;allHomeItems.push(id);const d=document.createElement('div');d.className='room-item';d.id=id;d.innerHTML=`<div class="room-chk" id="rchk-${id}"></div><div style="flex:1;min-width:0"><div class="rin">${item.name}</div>${item.note?`<div class="rin-note">${item.note}</div>`:''}</div><span class="rtag rtag-${item.tag}">${item.tag}</span>`;d.onclick=()=>toggleHomeItem(id,undefined);sc.appendChild(d);});
+const rc=document.getElementById('room-container');ROOMS.forEach((room,ri)=>{const card=document.createElement('div');card.className='room-card';card.innerHTML=`<div class="room-hdr" onclick="toggleRoom(${ri})"><span class="room-title">${room.name}</span><span class="room-ct"><span id="rct-${ri}">0 / ${room.items.length}</span><span class="chev" id="rchev-${ri}">▼</span></span></div><div class="room-body" id="rbody-${ri}"><div class="room-items" id="ritems-${ri}"></div></div>`;rc.appendChild(card);const ie=card.querySelector(`#ritems-${ri}`);room.items.forEach((item,ii)=>{const id=`ri-${ri}-${ii}`;allHomeItems.push(id);const d=document.createElement('div');d.className='room-item';d.id=id;d.innerHTML=`<div class="room-chk" id="rchk-${id}"></div><div style="flex:1;min-width:0"><div class="rin">${item.name}</div>${item.note?`<div class="rin-note">${item.note}</div>`:''}</div><span class="rtag rtag-${item.tag}">${item.tag}</span>`;d.onclick=()=>toggleHomeItem(id,ri);ie.appendChild(d);});});
 
-updateProg();
-document.getElementById('body-0').classList.add('open');
-document.getElementById('chev-0').classList.add('open');
+let allAddrItems=[];const ac=document.getElementById('addr-container');ADDRESS_CATS.forEach((cat,ci)=>{const b=document.createElement('div');b.className='addr-cat';b.innerHTML=`<div class="addr-cat-hdr"><span class="addr-cat-title">${cat.title}</span><span class="addr-cat-ct" id="act-${ci}">0 / ${cat.items.length}</span></div><div class="addr-items" id="aitems-${ci}"></div>`;ac.appendChild(b);const ie=b.querySelector(`#aitems-${ci}`);cat.items.forEach((item,ii)=>{const id=`ai-${ci}-${ii}`;allAddrItems.push({id,ci});const d=document.createElement('div');d.className='addr-item';d.id=id;const wb=item.who==='both'?`<span class="awho both">Both</span>`:item.who==='ana'?`<span class="awho ana">Ana</span>`:`<span class="awho ell">Ell</span>`;d.innerHTML=`<div class="addr-chk" id="achk-${id}"></div><div style="flex:1;min-width:0"><div class="ain">${item.name}</div><div class="aihow">${item.how}</div></div><div class="awho-wrap">${wb}</div>`;d.onclick=()=>toggleAddr(id,ci);ie.appendChild(d);});});
+
+let allColItems=[];const cc=document.getElementById('col-container');COLOMBIA_CATS.forEach((cat,ci)=>{const b=document.createElement('div');b.className='pack-cat';b.innerHTML=`<div class="pack-cat-hdr" onclick="togglePackCat(${ci})"><span class="pack-cat-title">${cat.name}</span><span class="pack-cat-ct"><span id="cct-${ci}">0 / ${cat.items.length}</span><span class="chev" id="cchev-${ci}">▼</span></span></div><div class="pack-items" id="citems-${ci}"></div>`;cc.appendChild(b);const ie=b.querySelector(`#citems-${ci}`);cat.items.forEach((item,ii)=>{const id=`ci-${ci}-${ii}`;allColItems.push({id,ci});const pc=item.owner==='ana'?'pana':item.owner==='ell'?'pell':'pshared';const wl=item.owner==='ana'?'Ana':item.owner==='ell'?'Elliott':'Shared';const d=document.createElement('div');d.className=`pack-item ${pc}`;d.id=id;d.innerHTML=`<div class="pack-chk" id="pchk-${id}"></div><span class="pack-who">${wl}</span><div style="flex:1;min-width:0"><div class="pin">${item.name}</div>${item.note?`<div class="pin-note">${item.note}</div>`:''}</div>`;d.onclick=()=>togglePack(id,ci);ie.appendChild(d);});});
+
+function toggleDay(di){const b=document.getElementById(`body-${di}`),c=document.getElementById(`chev-${di}`);c.classList.toggle('open',b.classList.toggle('open'));}
+function toggleRoom(ri){const b=document.getElementById(`rbody-${ri}`),c=document.getElementById(`rchev-${ri}`);c.classList.toggle('open',b.classList.toggle('open'));}
+function togglePackCat(ci){const el=document.getElementById(`citems-${ci}`),c=document.getElementById(`cchev-${ci}`);const open=el.style.display!=='flex';el.style.display=open?'flex':'none';if(open)el.style.flexDirection='column';c.classList.toggle('open',open);}
+function toggleMonthTask(id){document.getElementById(id).classList.toggle('done');updateMonthProg();}
+function toggleHomeItem(id,ri){const el=document.getElementById(id);el.classList.toggle('done');document.getElementById('rchk-'+id).textContent=el.classList.contains('done')?'✓':'';if(ri!==undefined){const rd=allHomeItems.filter(i=>i.startsWith(`ri-${ri}-`)),rdd=rd.filter(i=>document.getElementById(i).classList.contains('done')).length;document.getElementById(`rct-${ri}`).textContent=`${rdd} / ${rd.length}`;}updateHomeProg();}
+function toggleAddr(id,ci){const el=document.getElementById(id);el.classList.toggle('done');document.getElementById('achk-'+id).textContent=el.classList.contains('done')?'✓':'';const cd=allAddrItems.filter(i=>i.ci===ci),cdd=cd.filter(i=>document.getElementById(i.id).classList.contains('done')).length;document.getElementById(`act-${ci}`).textContent=`${cdd} / ${cd.length}`;updateAddrProg();}
+function togglePack(id,ci){const el=document.getElementById(id);el.classList.toggle('done');document.getElementById('pchk-'+id).textContent=el.classList.contains('done')?'✓':'';const cd=allColItems.filter(i=>i.ci===ci),cdd=cd.filter(i=>document.getElementById(i.id).classList.contains('done')).length;document.getElementById(`cct-${ci}`).textContent=`${cdd} / ${cd.length}`;updateColProg();}
+function updateMonthProg(){const done=allMonthTasks.filter(id=>document.getElementById(id).classList.contains('done')).length,total=allMonthTasks.length,pct=total?Math.round(done/total*100):0;document.getElementById('month-pf').style.width=pct+'%';document.getElementById('s-done').textContent=done;document.getElementById('s-total').textContent=total;document.getElementById('s-pct').textContent=pct+'%';}
+function updateHomeProg(){const done=allHomeItems.filter(id=>document.getElementById(id).classList.contains('done')).length,total=allHomeItems.length,pct=total?Math.round(done/total*100):0;document.getElementById('home-pf').style.width=pct+'%';document.getElementById('h-done').textContent=done;document.getElementById('h-total').textContent=total;document.getElementById('h-pct').textContent=pct+'%';}
+function updateAddrProg(){const done=allAddrItems.filter(i=>document.getElementById(i.id).classList.contains('done')).length,total=allAddrItems.length,pct=total?Math.round(done/total*100):0;document.getElementById('addr-pf').style.width=pct+'%';document.getElementById('a-done').textContent=done;document.getElementById('a-total').textContent=total;document.getElementById('a-pct').textContent=pct+'%';}
+function updateColProg(){const done=allColItems.filter(i=>document.getElementById(i.id).classList.contains('done')).length,total=allColItems.length,pct=total?Math.round(done/total*100):0;document.getElementById('col-pf').style.width=pct+'%';document.getElementById('c-done').textContent=done;document.getElementById('c-total').textContent=total;document.getElementById('c-pct').textContent=pct+'%';}
+function switchTab(tab){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));const idx={month:0,home:1,address:2,colombia:3}[tab];document.querySelectorAll('.tab')[idx].classList.add('active');document.getElementById('tab-'+tab).classList.add('active');}
+updateMonthProg();updateHomeProg();updateAddrProg();updateColProg();
+document.getElementById('body-0').classList.add('open');document.getElementById('chev-0').classList.add('open');
 </script>
 </body>
 </html>
